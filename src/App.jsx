@@ -26,7 +26,10 @@ export default function App() {
 
   function updateQuantity(sku, quantity){
     setCart((items) => {
-      return items.map((item)=> item.sku === sku ? {...item, quantity } : item )
+      return quantity === 0
+        //We are telling to keep all items that aren't the one passed, whitch has qnt 0
+        ? items.filter((i) => i.sku !== sku)
+        : items.map((item)=> item.sku === sku ? {...item, quantity } : item )
     })
   }
 
