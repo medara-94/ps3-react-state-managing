@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -6,10 +6,23 @@ import Products from "./Products"
 import { Routes, Route } from "react-router-dom";
 import Detail from "./Detail";
 import Cart from "./Cart";
-import { getRoles } from "@testing-library/react";
 
 export default function App() {
-  const [cart, setCart] = useState([]);
+  // Mettendo una funzione sulla chiamata dello use state viene chiamata solo una volta
+  // al caricamento iniziale 
+  const [cart, setCart] = useState(()=> 
+    {
+      try {
+        return JSON.parse(localStorage.getItem("cart")) ?? []; //?? coalesce operator
+      } catch {
+        console.log("The cart could not be parsed into JSON");
+        return [];
+      };
+    });
+
+  // Says: anytime cart changes, store it in localStorage as a JSON String
+  useEffect (() => localStorage.setItem("cart",JSON.stringify(cart)), [cart])
+
   function addToCart(id, sku) {
     setCart((items) => {
       const itemInCart = items.find((item) => item.sku === sku);
