@@ -4,7 +4,7 @@ import useFetch from "./services/useFetch";
 import Spinner from "./Spinner";
 import PageNotFound from "./PageNotFound";
 
-export default function Detail() {
+export default function Detail(props) {
   //leggo dall'url  
   const {id} = useParams();
   const navigate = useNavigate();  
@@ -35,7 +35,9 @@ export default function Detail() {
                 <button 
                     disabled={!sku} 
                     className="btn btn-primary" 
-                    onClick={()=>navigate("/cart")}
+                    onClick={()=>{
+                        props.addToCart(id, sku);
+                        navigate("/cart")}}
                 >
                     Add to cart
                 </button>
