@@ -32,7 +32,11 @@ export default function Detail() {
                     {product.skus.map((s) => (<option key={s.sku} value={s.sku}>{s.size}</option>))}
             </select>
             <p>
-                <button className="btn btn-primary" onClick={()=>navigate("/cart")}>
+                <button 
+                    disabled={!sku} 
+                    className="btn btn-primary" 
+                    onClick={()=>navigate("/cart")}
+                >
                     Add to cart
                 </button>
             </p>
