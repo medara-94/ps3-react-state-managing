@@ -6,6 +6,7 @@ import Products from "./Products"
 import { Routes, Route } from "react-router-dom";
 import Detail from "./Detail";
 import Cart from "./Cart";
+import Checkout from "./Checkout";
 
 export default function App() {
   // Mettendo una funzione sulla chiamata dello use state viene chiamata solo una volta
@@ -56,6 +57,7 @@ export default function App() {
             <Route path="/:category" element={<Products/>} />
             <Route path="/:category/:id" element={<Detail  addToCart={addToCart}/>} />
             <Route path="/cart" element={<Cart cart={cart} updateQuantity={updateQuantity}/>} />
+            <Route path="/checkout" element={<Checkout cart={cart}/>} />
           </Routes>
         </main>
       </div>
