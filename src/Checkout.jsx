@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { saveShippingAddress } from "./services/shippingService";
 
 const STATUS = {
   IDLE: "IDLE",
@@ -13,9 +14,15 @@ const emptyAddress = {
   country: "",
 };
 
-export default function Checkout({ cart }) {
+export default function Checkout({ cart, emptyCart }) {
   const [address, setAddress] = useState(emptyAddress);
   const [status, setStatus] = useState(STATUS.IDLE);
+  const [saveError, setSaveError] = useState(null);
+
+  // Derived state
+  const errors = getErrors(address);
+  //E' valido se errors non ha proprieties
+  const isValid = Object.keys(errors).length === 0;
 
   function handleChange(e) {
     e.persist(); //Il garbage collector di React potrebbe pulire l'evento prima di questo momento
@@ -36,11 +43,45 @@ export default function Checkout({ cart }) {
   async function handleSubmit(event) {
     event.preventDefault();
     setStatus(STATUS.SUBMITTING);
+    if (isValid) {
+      try {
+        await saveShippingAddress(address);
+        emptyCart();
+        setStatus(STATUS.COMPLETED);
+      } catch (e) {
+        setSaveError(e);
+      }
+    } else {
+      setStatus(STATUS.SUBMITTED);
+    }
+  }
+
+  function getErrors(address) {
+    const result = {};
+    if (!address.city) result.city = "City is required";
+    if(!address.country) result.country = "Country is required"
+    return result;
+  }
+
+  if (saveError) throw saveError
+
+  if (status === STATUS.COMPLETED) {
+    return <h1>Thanks for shopping</h1>
   }
 
   return (
     <>
       <h1>Shipping Info</h1>
+      {!isValid && status === STATUS.SUBMITTED &&(
+        <div role="alert">
+          <p>Please fix the following errors:</p>
+          <ul>
+            {Object.keys(errors).map((key) => {
+              return <li key={key}>{errors[key]}</li>
+            })}
+          </ul>
+        </div>
+        )}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="city">City</label>
