@@ -39,10 +39,7 @@ export default function App() {
               path="/:category/:id"
               element={<Detail dispatchCart={dispatchCart} />}
             />
-            <Route
-              path="/cart"
-              element={<Cart cart={cart} dispatchCart={dispatchCart} />}
-            />
+            <Route path="/cart" element={<Cart />} />
             <Route
               path="/checkout"
               element={<Checkout cart={cart} dispatchCart={dispatchCart} />}
