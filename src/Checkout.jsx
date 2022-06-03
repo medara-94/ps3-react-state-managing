@@ -6,7 +6,7 @@ const STATUS = {
   SUBMITTED: "SUBMITTED",
   SUBMITTING: "SUBMITTING",
   COMPLETED: "COMPLETED",
-}
+};
 
 // Declaring outside component to avoid recreation on each render
 const emptyAddress = {
@@ -20,7 +20,7 @@ export default function Checkout({ cart, emptyCart }) {
   const [saveError, setSaveError] = useState(null);
   // Mi segno i campi che sono stati toccati per visualizzare eventuali errori
   // Salvo l'id del campo toccato
-  const [touched,setTouched] = useState({});
+  const [touched, setTouched] = useState({});
 
   // Derived state
   const errors = getErrors(address);
@@ -29,19 +29,19 @@ export default function Checkout({ cart, emptyCart }) {
 
   function handleChange(e) {
     e.persist(); //Il garbage collector di React potrebbe pulire l'evento prima di questo momento
-    setAddress((curAddress)=>{
+    setAddress((curAddress) => {
       return {
         //Set address to a copy of the current address
         ...curAddress,
         //Use input id (set to city or country) to determine which property to set
         [e.target.id]: e.target.value,
-      }
-    })
+      };
+    });
   }
 
   function handleBlur(event) {
     setTouched((cur) => {
-      return {...cur, [event.target.id]: true};
+      return { ...cur, [event.target.id]: true };
     });
   }
 
@@ -64,29 +64,29 @@ export default function Checkout({ cart, emptyCart }) {
   function getErrors(address) {
     const result = {};
     if (!address.city) result.city = "City is required";
-    if(!address.country) result.country = "Country is required"
+    if (!address.country) result.country = "Country is required";
     return result;
   }
 
-  if (saveError) throw saveError
+  if (saveError) throw saveError;
 
   if (status === STATUS.COMPLETED) {
-    return <h1>Thanks for shopping</h1>
+    return <h1>Thanks for shopping</h1>;
   }
 
   return (
     <>
       <h1>Shipping Info</h1>
-      {!isValid && status === STATUS.SUBMITTED &&(
+      {!isValid && status === STATUS.SUBMITTED && (
         <div role="alert">
           <p>Please fix the following errors:</p>
           <ul>
             {Object.keys(errors).map((key) => {
-              return <li key={key}>{errors[key]}</li>
+              return <li key={key}>{errors[key]}</li>;
             })}
           </ul>
         </div>
-        )}
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="city">City</label>
@@ -109,7 +109,7 @@ export default function Checkout({ cart, emptyCart }) {
           <select
             id="country"
             value={address.country}
-            // onBlur={handleBlur} Fixare 
+            // onBlur={handleBlur} Fixare
             onChange={handleChange}
           >
             <option value="">Select Country</option>
