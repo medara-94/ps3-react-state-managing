@@ -24,36 +24,6 @@ export default function App() {
   // Says: anytime cart changes, store it in localStorage as a JSON String
   useEffect(() => localStorage.setItem("cart", JSON.stringify(cart)), [cart]);
 
-  function addToCart(id, sku) {
-    setCart((items) => {
-      const itemInCart = items.find((item) => item.sku === sku);
-      if (itemInCart) {
-        //Return new array with the matching item replaced
-        return items.map((item) =>
-          item.sku === sku ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        //Return new array with the new item appended
-        return [...items, { id, sku, quantity: 1 }];
-      }
-    });
-  }
-
-  function updateQuantity(sku, quantity) {
-    setCart((items) => {
-      return quantity === 0
-        ? //We are telling to keep all items that aren't the one passed, whitch has qnt 0
-          items.filter((i) => i.sku !== sku)
-        : items.map((item) =>
-            item.sku === sku ? { ...item, quantity } : item
-          );
-    });
-  }
-
-  function emptyCart() {
-    setCart([]);
-  }
-
   return (
     <>
       <div className="content">
