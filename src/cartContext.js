@@ -1,8 +1,8 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useContext } from "react";
 import cartReducer from "./cartReducer";
 
 // The default value would apply if a component tries consuming the context without a provider in a parent
-export const CartContext = React.createContext(null);
+const CartContext = React.createContext(null);
 
 let initialCart;
 try {
@@ -20,4 +20,9 @@ export function CartProvider(props) {
 
     const contextValue = { cart, dispatchCart};    
     return <CartContext.Provider value={contextValue}>{props.children}</CartContext.Provider>
+}
+
+export function useCart(){
+    const context = useContext(CartContext);
+    return context;
 }

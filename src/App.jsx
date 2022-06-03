@@ -19,15 +19,9 @@ export default function App() {
           <Routes>
             <Route path="/" element={<h1>Welcome to Carved Rock Fitness</h1>} />
             <Route path="/:category" element={<Products />} />
-            <Route
-              path="/:category/:id"
-              element={<Detail dispatchCart={dispatchCart} />}
-            />
+            <Route path="/:category/:id" element={<Detail />} />
             <Route path="/cart" element={<Cart />} />
-            <Route
-              path="/checkout"
-              element={<Checkout cart={cart} dispatchCart={dispatchCart} />}
-            />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
         </main>
       </div>
