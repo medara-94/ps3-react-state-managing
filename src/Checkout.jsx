@@ -14,7 +14,7 @@ const emptyAddress = {
   country: "",
 };
 
-export default function Checkout({ cart, emptyCart }) {
+export default function Checkout({ cart, dispatchCart }) {
   const [address, setAddress] = useState(emptyAddress);
   const [status, setStatus] = useState(STATUS.IDLE);
   const [saveError, setSaveError] = useState(null);
@@ -40,6 +40,7 @@ export default function Checkout({ cart, emptyCart }) {
   }
 
   function handleBlur(event) {
+    event.persist();
     setTouched((cur) => {
       return { ...cur, [event.target.id]: true };
     });
@@ -51,7 +52,7 @@ export default function Checkout({ cart, emptyCart }) {
     if (isValid) {
       try {
         await saveShippingAddress(address);
-        emptyCart();
+        dispatchCart({ type: "empty" });
         setStatus(STATUS.COMPLETED);
       } catch (e) {
         setSaveError(e);
@@ -109,7 +110,7 @@ export default function Checkout({ cart, emptyCart }) {
           <select
             id="country"
             value={address.country}
-            // onBlur={handleBlur} Fixare
+            onBlur={handleBlur}
             onChange={handleChange}
           >
             <option value="">Select Country</option>

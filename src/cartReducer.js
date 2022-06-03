@@ -8,7 +8,7 @@ export default function cartReducer(cart, action){
             return [];
         case "add":{
             const {id, sku} = action;
-            const itemInCart = items.find((cart) => item.sku === sku);
+            const itemInCart = cart.find((item) => item.sku === sku);
             if (itemInCart) {
                 //Return new array with the matching item replaced
                 return cart.map((item) =>
