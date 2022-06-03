@@ -9,6 +9,7 @@ import Detail from "./Detail";
 import Cart from "./Cart";
 import Checkout from "./Checkout";
 import cartReducer from "./cartReducer";
+import { CartContext } from "./cartContext";
 
 let initialCart;
 try {
@@ -26,7 +27,8 @@ export default function App() {
   useEffect(() => localStorage.setItem("cart", JSON.stringify(cart)), [cart]);
 
   return (
-    <>
+    //value props determines what will be shared via the context
+    <CartContext.Provider value={{ cart, dispatchCart }}>
       <div className="content">
         <Header />
         <main>
@@ -49,6 +51,6 @@ export default function App() {
         </main>
       </div>
       <Footer />
-    </>
+    </CartContext.Provider>
   );
 }
