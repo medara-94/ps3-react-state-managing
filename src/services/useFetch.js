@@ -1,29 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
 export default function useFetch(url) {
+  const isMountedRef = useRef(false); //Like an istance var. React persists ref value between renders
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    isMountedRef.current = true;
     async function init() {
       try {
         const response = await fetch(baseUrl + url);
         if (response.ok) {
           const json = await response.json();
-          setData(json);
+          if (isMountedRef.current) setData(json);
         } else {
           throw response;
         }
       } catch (e) {
-        setError(e);
+        if (isMountedRef.current) setError(e);
       } finally {
-        setLoading(false);
+        if (isMountedRef.current) setLoading(false);
       }
     }
     init();
+
+    //Any function returned from useEffect is called on onMount.
+    return () => { isMountedRef.current = false; }
   }, [url]);
 
   return { data, error, loading };
